@@ -1,0 +1,28 @@
+import pymysql.cursors
+
+con = pymysql.connect(host='localhost',user='root',database='geaj',password='fiote',cursorclass=pymysql.cursors.DictCursor)
+
+with con.cursor() as c:
+     
+    def busca_dados(filtro):
+        sql_con = "SELECT DISTINCT NM_ACOLHIDO FROM TB_PEDIDOSORACOES WHERE ST_ACOLHIDO = " + "\'" + filtro + "\'"
+        sql_con = sql_con + " ORDER BY NM_ACOLHIDO;"
+        c.execute(sql_con)
+        return c.fetchall()
+    
+    my_cursor = busca_dados('não')
+    print("Relação de Desencarnados para preces \n")
+    for linha in my_cursor:
+        print(linha['NM_ACOLHIDO'])
+        
+    print(c.rowcount,' Total de pedidos por desencarnados!')
+
+    my_cursor = busca_dados('SIM')
+    print("\n \n Relação de Encarnados para preces \n")
+    for linha in my_cursor:
+        print(linha['NM_ACOLHIDO'])
+    
+    print()
+    print(c.rowcount,' Total de pedidos por encarnados!')
+    
+con.close()
